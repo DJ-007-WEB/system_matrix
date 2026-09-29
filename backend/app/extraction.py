@@ -22,9 +22,9 @@ DocumentType = Literal[
 
 class LineItem(BaseModel):
     description: str = ""
-    quantity: float = 0
+    quantity: Optional[float] = None
     unit: str = ""
-    unit_price: float = 0
+    unit_price: Optional[float] = None
 
 
 class ExtractedDocument(BaseModel):
