@@ -1,11 +1,11 @@
 import asyncio
-import json
 import mimetypes
 import os
 from pathlib import Path
 from typing import List, Literal, Optional
 
-from pydantic import BaseModel, Field\nfrom google.genai import types
+from pydantic import BaseModel, Field
+from google.genai import types
 
 
 DocumentType = Literal[
@@ -84,8 +84,6 @@ def _extract_sync(path: str) -> dict:
     file_path = Path(path)
     mime_type = mimetypes.guess_type(file_path.name)[0] or "application/octet-stream"
 
-    # Gemini's multimodal document support is used directly for PDFs/images.
-    # CSV/XLSX are converted to compact text so their tabular data is explicit.
     if file_path.suffix.lower() in {".csv", ".xlsx", ".xls"}:
         if file_path.suffix.lower() == ".csv":
             content = file_path.read_text(encoding="utf-8", errors="replace")
@@ -128,7 +126,6 @@ def _extract_sync(path: str) -> dict:
 
 
 async def extract_with_provider(path: str) -> dict:
-    # google-genai is synchronous; keep blocking SDK work off FastAPI's event loop.
     try:
         return await asyncio.to_thread(_extract_sync, path)
     except Exception as exc:
