@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   AlertTriangle, ArrowRight, Bell, Check, ChevronDown, CloudUpload, ClipboardList,
-  Gauge, Inbox, LayoutDashboard, Menu, PackageSearch, Settings, ShieldCheck, Truck, UserRound, X
+  Gauge, Inbox, LayoutDashboard, Menu, PackageSearch, PanelLeftClose, PanelLeftOpen, Settings, ShieldCheck, Truck, UserRound, X
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { cn } from "../lib/utils";
