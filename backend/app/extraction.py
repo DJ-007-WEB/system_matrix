@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from typing import List, Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field\nfrom google.genai import types
 
 
 DocumentType = Literal[
