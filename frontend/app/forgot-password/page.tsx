@@ -1,0 +1,5 @@
+"use client";
+import {useState} from "react";
+import {Mail} from "lucide-react";
+import {Button,Input,Logo} from "../../components/ui";
+export default function Forgot(){const [sent,setSent]=useState(false);return <div className="grid min-h-screen place-items-center bg-paper p-6"><div className="w-full max-w-md"><Logo/><div className="mt-12"><div className="rounded-2xl bg-primary/10 p-3 text-primary w-fit"><Mail/></div><h1 className="mt-5 font-display text-4xl">{sent?"Check your inbox.":"Reset your password"}</h1><p className="mt-3 text-sm leading-6 text-muted">{sent?"We sent a reset link to your work email.":"Enter the work email on your Sentinel account and we’ll send a reset link."}</p>{sent?<Button href="/reset-success" className="mt-7 w-full">Open reset confirmation</Button>:<form onSubmit={e=>{e.preventDefault();setSent(true)}} className="mt-7 space-y-4"><Input label="Work email" type="email" autoComplete="email" placeholder="you@company.com" autoFocus required/><Button className="w-full">Send reset link</Button></form>}</div></div></div>}
