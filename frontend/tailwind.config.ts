@@ -1,7 +1,14 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./app/**/*.{js,ts,jsx,tsx,mdx}"],
+  // Scan every frontend source file that can contain Tailwind classes.
+  // Components are critical here because AppShell and the shared UI own
+  // the sidebar/layout utilities.
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx,mdx}"
+  ],
   darkMode: ["class"],
   theme: {
     extend: {
