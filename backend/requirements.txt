@@ -6,5 +6,5 @@ python-multipart==0.0.20
 pydantic==2.11.7
 rapidfuzz==3.13.0
 httpx==0.28.1
-google-genai==1.66.0
+google-genai==2.25.0
 openpyxl==3.1.5
