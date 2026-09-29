@@ -50,9 +50,68 @@ export function AlertCard({alert,compact=false}:{alert:any,compact?:boolean}){
 export function EvidenceChain({items}:any){return <div className="space-y-0">{items.map((item:any,i:number)=><div key={item.label} className="relative flex gap-4 pb-6 last:pb-0"><div className="flex flex-col items-center"><div className="grid h-9 w-9 place-items-center rounded-full border border-line bg-panel text-primary text-xs font-bold">{String(i+1).padStart(2,"0")}</div>{i<items.length-1&&<div className="mt-1 h-full w-px bg-line"/>}</div><div className="min-w-0 flex-1 rounded-xl border border-line bg-paper p-3"><div className="flex flex-wrap items-center justify-between gap-2"><div><p className="text-xs font-semibold uppercase tracking-wider text-muted">{item.label}</p><p className="mt-1 text-sm font-medium">{item.detail}</p></div><ConfidenceBadge value={item.confidence}/></div></div></div>)}</div>}
 export function DataTable({headers,rows}:any){return <div className="overflow-x-auto"><table className="w-full min-w-[720px] text-left text-sm"><thead><tr className="border-b border-line text-xs uppercase tracking-wider text-muted">{headers.map((h:string)=><th key={h} className="px-4 py-3 font-semibold">{h}</th>)}</tr></thead><tbody>{rows}</tbody></table></div>}
 export function AppShell({children,title,subtitle}:{children:ReactNode,title?:string,subtitle?:string}){
- const path=usePathname(); const [open,setOpen]=useState(false);
- const nav=[["/dashboard","Dashboard",LayoutDashboard],["/review","Needs review",Inbox],["/orders","Orders & documents",ClipboardList],["/suppliers","Suppliers",Truck],["/stock","Stock & runway",PackageSearch],["/capture","Quick capture",CloudUpload],["/settings","Settings",Settings]];
- return <div className="min-h-screen bg-paper"><aside className={cn("fixed inset-y-0 left-0 z-40 w-64 border-r border-line bg-panel px-4 py-5 transition-transform lg:translate-x-0",open?"translate-x-0":"-translate-x-full")}><div className="flex items-center gap-3 px-2"><div className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-paper"><Gauge size={20}/></div><div><div className="font-display text-lg">Sentinel</div><div className="text-[10px] uppercase tracking-[.2em] text-muted">Supply chain control</div></div></div><nav className="mt-8 space-y-1">{nav.map(([href,label,Icon]:any)=><Link key={href} href={href} onClick={()=>setOpen(false)} className={cn("flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",path===href?"bg-primary text-paper":"text-muted hover:bg-paper hover:text-ink")}><Icon size={17}/>{label}</Link>)}</nav><div className="absolute bottom-5 left-4 right-4 rounded-xl border border-line bg-paper p-3"><div className="flex items-center gap-2 text-xs font-semibold"><ShieldCheck size={15} className="text-success"/> Nothing sends without approval</div><p className="mt-1 text-[11px] leading-4 text-muted">Evidence and audit trail stay attached to every action.</p></div></aside><div className="lg:pl-64"><header className="sticky top-0 z-30 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur md:px-7"><div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4"><button className="rounded-xl border border-line p-2 lg:hidden" onClick={()=>setOpen(true)} aria-label="Open navigation"><Menu size={19}/></button><div className="min-w-0">{title&&<h1 className="truncate font-display text-xl md:text-2xl">{title}</h1>}{subtitle&&<p className="hidden text-xs text-muted sm:block">{subtitle}</p>}</div><div className="ml-auto flex items-center gap-2"><button className="relative rounded-xl border border-line bg-panel p-2.5" aria-label="Notifications"><Bell size={18}/><span className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-critical"/></button><div className="hidden items-center gap-2 rounded-xl border border-line bg-panel px-3 py-2 text-sm sm:flex"><div className="grid h-7 w-7 place-items-center rounded-full bg-primary/10 text-primary"><UserRound size={15}/></div>Dh<ChevronDown size={14}/></div></div></div></header><main className="mx-auto max-w-[1440px] px-4 py-6 md:px-7 md:py-8">{children}</main></div></div>
+ const path=usePathname();
+ const [open,setOpen]=useState(true);
+ const nav=[
+  ["/dashboard","Dashboard",LayoutDashboard],
+  ["/review","Needs review",Inbox],
+  ["/orders","Orders & documents",ClipboardList],
+  ["/suppliers","Suppliers",Truck],
+  ["/stock","Stock & runway",PackageSearch],
+  ["/capture","Quick capture",CloudUpload],
+  ["/settings","Settings",Settings]
+ ];
+ return <div className="min-h-screen bg-paper">
+   {open&&<button aria-label="Close navigation overlay" onClick={()=>setOpen(false)} className="fixed inset-0 z-30 bg-ink/15 lg:hidden"/>}
+   <aside className={cn(
+     "fixed inset-y-0 left-0 z-40 w-64 border-r border-line bg-panel px-4 py-5 shadow-soft transition-transform duration-200 ease-out",
+     open ? "translate-x-0" : "-translate-x-full"
+   )}>
+     <div className="flex items-center justify-between gap-2 px-2">
+       <div className="flex items-center gap-3 min-w-0">
+         <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary text-paper"><Gauge size={20}/></div>
+         <div className="min-w-0"><div className="font-display text-lg">Sentinel</div><div className="truncate text-[10px] uppercase tracking-[.2em] text-muted">Supply chain control</div></div>
+       </div>
+       <button onClick={()=>setOpen(false)} className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-muted hover:bg-paper hover:text-ink lg:hidden" aria-label="Close navigation"><X size={18}/></button>
+     </div>
+     <nav className="mt-8 space-y-1">
+       {nav.map(([href,label,Icon]:any)=><Link key={href} href={href} onClick={()=>setOpen(false)} className={cn(
+         "flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
+         path===href?"bg-primary text-paper":"text-muted hover:bg-paper hover:text-ink"
+       )}><Icon size={17}/>{label}</Link>)}
+     </nav>
+     <div className="absolute bottom-5 left-4 right-4 rounded-xl border border-line bg-paper p-3">
+       <div className="flex items-center gap-2 text-xs font-semibold"><ShieldCheck size={15} className="text-success"/> Nothing sends without approval</div>
+       <p className="mt-1 text-[11px] leading-4 text-muted">Evidence and audit trail stay attached to every action.</p>
+     </div>
+   </aside>
+
+   <div className={cn("min-h-screen transition-[padding] duration-200 ease-out",open?"lg:pl-64":"lg:pl-0")}>
+     <header className="sticky top-0 z-20 border-b border-line bg-paper/95 px-4 py-3 backdrop-blur md:px-7">
+       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4">
+         <div className="flex min-w-0 items-center gap-3">
+           <button
+             className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-line bg-panel text-ink hover:bg-paper"
+             onClick={()=>setOpen(v=>!v)}
+             aria-label={open ? "Hide navigation" : "Show navigation"}
+             aria-expanded={open}
+           >
+             {open ? <PanelLeftClose size={19}/> : <PanelLeftOpen size={19}/>}
+           </button>
+           <div className="min-w-0">
+             {title&&<h1 className="truncate font-display text-xl md:text-2xl">{title}</h1>}
+             {subtitle&&<p className="hidden text-xs text-muted sm:block">{subtitle}</p>}
+           </div>
+         </div>
+         <div className="ml-auto flex shrink-0 items-center gap-2">
+           <button className="relative rounded-xl border border-line bg-panel p-2.5" aria-label="Notifications"><Bell size={18}/><span className="absolute right-1 top-1 h-1.5 w-1.5 rounded-full bg-critical"/></button>
+           <div className="hidden items-center gap-2 rounded-xl border border-line bg-panel px-3 py-2 text-sm sm:flex"><div className="grid h-7 w-7 place-items-center rounded-full bg-primary/10 text-primary"><UserRound size={15}/></div>Dh<ChevronDown size={14}/></div>
+         </div>
+       </div>
+     </header>
+     <main className="mx-auto max-w-[1440px] px-4 py-6 md:px-7 md:py-8">{children}</main>
+   </div>
+ </div>
 }
 export function Logo(){return <Link href="/" className="flex items-center gap-2"><div className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-paper"><Gauge size={18}/></div><span className="font-display text-xl">SupplyChain Sentinel</span></Link>}
 export function Metric({label,value,sub,icon:Icon=Gauge,tone="primary"}:any){return <Card className="p-5"><div className="flex items-start justify-between"><div><p className="text-xs font-semibold uppercase tracking-wider text-muted">{label}</p><p className="mt-2 font-display text-3xl">{value}</p><p className="mt-1 text-xs text-muted">{sub}</p></div><div className={cn("rounded-xl p-2.5",tone==="critical"?"bg-critical/10 text-critical":"bg-primary/10 text-primary")}><Icon size={18}/></div></div></Card>}
